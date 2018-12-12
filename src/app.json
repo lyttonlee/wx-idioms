@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "pages/game/main",
+    "pages/home/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#054f58",
+    "navigationBarTitleText": "idioms",
+    "navigationBarTextStyle": "#fff"
+  }
+}
