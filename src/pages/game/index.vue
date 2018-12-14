@@ -1,28 +1,36 @@
 <template>
   <div class="game">
-    <div class="time">
+    <!-- <div class="time">
       <text>已持续{{last}}</text>
+    </div> -->
+    <!-- <UserInput /> -->
+    <div class="user">
+      <input class="input" confirm-type="确定" maxlength=20 type="text" @confirm="submit" adjust-position=fasle placeholder="成语接龙" v-model="inputValue"/>
     </div>
-    <div class="content">
-      <text>dsa</text>
-    </div>
-    <div class="answer">
-      
-    </div>
+    <Idiom
+    />
   </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
+import Idiom from '@/components/idiom'
+// import UserInput from '@/components/input'
 export default {
+  components: {
+    Idiom
+    // UserInput
+  },
   data () {
     return {
       duration: 0,
-      last: ''
+      inputValue: ''
     }
   },
   computed: {
     // ...
   },
   methods: {
+    ...mapActions(['userSubmit', 'initChar']),
     changNavBarTitle (title) {
       wx.setNavigationBarTitle({
         title
@@ -38,49 +46,100 @@ export default {
         const ss = seconds >= 10 ? seconds : `0${seconds}`
         return `${mm} : ${ss}`
       }
+    },
+    scrollToBottom () {
+      // wx.createSelectorQuery().selcet('.content').boundingClientRect((rect) => {
+      //   console.log(rect)
+      // })
+      const query = wx.createSelectorQuery()
+      // console.log(query)
+      query.select('.game').boundingClientRect((rect) => {
+        // console.log(rect.height)
+        const height = rect.height
+        // console.log(height)
+        if (height > 504) {
+          wx.pageScrollTo({
+            scrollTop: height
+          })
+        }
+      }).exec()
+    },
+    // setBackgroundColor () {
+    //   wx.setBackgroundColor({
+    //     backgroundColor: '#445b5f',
+    //     complete () {
+    //       console.log('#445b5f')
+    //     }
+    //   })
+    // },
+    submit (e) {
+      // console.log(e)
+      // console.log(this.inputValue[0])
+      if (this.inputValue.length === 0) return
+      this.userSubmit(this.inputValue).then(res => {
+        if (res.done) {
+          this.inputValue = ''
+          this.scrollToBottom()
+        }
+      })
     }
   },
   onLoad (o) {
-    // console.log(o)
-    this.changNavBarTitle('game')
+    // this.setBackgroundColor()
+    this.changNavBarTitle('成语接龙')
+    this.scrollToBottom()
   },
   // mounted 获取不到 url params
   mounted () {
     // ....
+    // console.log(this)
   },
   onShow () {
-    this.timer = setInterval(() => {
-      this.duration += 1
-      this.last = this.formatDuration(this.duration)
-    }, 1000)
+    // this.timer = setInterval(() => {
+    //   this.duration += 1
+    //   this.last = this.formatDuration(this.duration)
+    // }, 1000)
+    this.initChar()
+    this.scrollToBottom()
   },
   beforeDestroy () {
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
+    // if (this.timer) {
+    //   clearInterval(this.timer)
+    // }
   }
 }
 </script>
 <style lang="less" scoped>
+// ::-webkit-scrollbar {
+//   display: none;
+// }
 .game {
   display: flex;
   flex-direction: column;
   // justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #03333aa9;
-  .time {
-    font-size: .4rem;
-    color: aquamarine;
-    margin-top: 20px; 
-  }
-  .content {
-    width: 80%;
-    background: #f1f1f1a9;
-    border-radius: 20px;
-    box-shadow: 0 3px 5px rgb(3, 41, 46);
-    margin: 30px 0;
-    padding: 20px;
+  // min-height: 100vh;
+  // background-color: #445b5f;
+  // .time {
+  //   font-size: .4rem;
+  //   color: aquamarine;
+  //   margin-top: 10px; 
+  // }
+  .user {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 30rpx 30rpx 40rpx 30rpx;
+    background: #023744;
+    height: 9vh;
+    box-sizing: border-box;
+    .input {
+      // color: #434;
+      border-bottom: 1px solid rgb(230, 225, 222);
+      &:focus {
+        border-bottom: 2px solid rgb(141, 33, 33);
+      }
+    }
   }
 }
 </style>

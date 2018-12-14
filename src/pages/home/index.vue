@@ -23,19 +23,19 @@ export default {
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: (res) => {
-          console.log(res)
-          this.code = res.code
-        }
-      })
-    },
+    // bindViewTap () {
+    //   const url = '../logs/main'
+    //   wx.navigateTo({ url })
+    // },
+    // getUserInfo () {
+    //   // 调用登录接口
+    //   wx.login({
+    //     success: (res) => {
+    //       console.log(res)
+    //       this.code = res.code
+    //     }
+    //   })
+    // },
     toGame () {
       wx.navigateTo({url: `../game/main?user=${this.code}`})
     },
@@ -46,18 +46,18 @@ export default {
     }
   },
   onLoad () {
-    this.changNavBarTitle('idioms game')
+    this.changNavBarTitle('成语接龙小游戏')
   },
   created () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    // this.getUserInfo()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .home {
-  background: #03333aa9;
+  background-color: #418792;
   height: 100vh;
   color: bisque;
   display: flex;
@@ -86,10 +86,6 @@ export default {
   }
   .action {
     width: 80%;
-    .start-btn {
-      // width: 80%;
-      // color: aliceblue;
-    }
   }
 }
 

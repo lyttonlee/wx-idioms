@@ -17,11 +17,15 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
-// export function formatDuration (duration) {
-//   const hour = duration / 1000 / 60
-// }
+// 生成一个指定范围的随机数
+
+export function createRandomInt (maxInt) {
+  const random = Math.floor(Math.random() * maxInt) + 1
+  return random
+}
 
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  createRandomInt
 }

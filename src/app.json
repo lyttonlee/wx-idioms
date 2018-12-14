@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/game/main",
-    "pages/home/main"
+    "pages/home/main",
+    "pages/game/main"
   ],
   "window": {
     "backgroundTextStyle": "dark",
