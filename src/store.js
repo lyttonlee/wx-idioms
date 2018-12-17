@@ -44,10 +44,11 @@ const store = new Vuex.Store({
         if (RobotChar.newRuningIdiom) {
           commit('changeRuningIdiom', RobotChar.newRuningIdiom)
           commit('addRobotChar', RobotChar)
+          resolve({done: true})
         } else {
           commit('addRobotChar', RobotChar)
+          resolve({done: true})
         }
-        resolve({done: true})
       })
     }
   }

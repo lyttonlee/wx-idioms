@@ -7,8 +7,9 @@ import { createRandomInt } from './index'
  */
 export default class Robot {
   /**
-   *Creates an instance of Robot.
+   *  创建一个 Robot 实例 instance
    * @param {string} userSendIdiom
+   * @param {string} runingIdiom
    * @memberof Robot
    */
   constructor (userSendIdiom, runingIdiom) {
@@ -22,7 +23,7 @@ export default class Robot {
     // 计算成语数组长度
     const idiomsLenth = idioms.length
     // 生成一个范围内的随机数
-    const random = createRandomInt(idiomsLenth)
+    const random = createRandomInt(idiomsLenth) - 1
     // console.log(random)
     // this.runingIdiom = idioms[random]
     return {
@@ -66,7 +67,26 @@ export default class Robot {
   }
   answerUser () {
     // ...
-    if (!this.isChinese(this.userSendIdiom)) {
+    // 这是作弊代码
+    if (this.userSendIdiom === '小可爱') {
+      const filtered = idioms.filter((idiom) => {
+        return idiom[0] === this.runingIdiom[3]
+      })
+      if (filtered.length === 0) {
+        return {
+          spokeman: 'robot',
+          msg: `哈哈哈！！！面对“${this.runingIdiom}”这个成语，我也是接不出来的！`
+        }
+      } else {
+        const random = createRandomInt(filtered.length) - 1
+        return {
+          spokeman: 'robot',
+          msg: `继续接呗 ${filtered[random]}`,
+          newRuningIdiom: filtered[random]
+        }
+      }
+    // 这是机器人逻辑代码
+    } else if (!this.isChinese(this.userSendIdiom)) {
       return {
         spokeman: 'robot',
         msg: '你是来卖萌的吗？求你先学会说中文再来！'
@@ -96,7 +116,7 @@ export default class Robot {
           msg: '你真厉害，我认输了！！！'
         }
       } else {
-        const random = createRandomInt(filtered.length)
+        const random = createRandomInt(filtered.length) - 1
         return {
           spokeman: 'robot',
           msg: filtered[random],

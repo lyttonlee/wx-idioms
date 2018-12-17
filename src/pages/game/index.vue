@@ -4,8 +4,8 @@
       <text>已持续{{last}}</text>
     </div> -->
     <!-- <UserInput /> -->
-    <div class="user">
-      <input class="input" confirm-type="确定" maxlength=20 type="text" @confirm="submit" adjust-position=fasle placeholder="成语接龙" v-model="inputValue"/>
+    <div class="user" :style="{bottom: isFoucsed ? keyBoardHeight + 'px' : 0}">
+      <input class="input" confirm-type="确定" maxlength=20 type="text" @confirm="submit" focus="true" :adjust-position="isFullScreen" placeholder="成语接龙" @focus="onFoucs" @blur="onBlur" v-model="inputValue"/>
     </div>
     <Idiom
     />
@@ -23,11 +23,21 @@ export default {
   data () {
     return {
       duration: 0,
-      inputValue: ''
+      inputValue: '',
+      screenHeight: 0,
+      isFoucsed: false,
+      keyBoardHeight: 0
     }
   },
   computed: {
     // ...
+    isFullScreen () {
+      if (this.screenHeight > 400) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapActions(['userSubmit', 'initChar']),
@@ -56,8 +66,9 @@ export default {
       query.select('.game').boundingClientRect((rect) => {
         // console.log(rect.height)
         const height = rect.height
+        this.screenHeight = height
         // console.log(height)
-        if (height > 504) {
+        if (height > 400) {
           wx.pageScrollTo({
             scrollTop: height
           })
@@ -82,6 +93,19 @@ export default {
           this.scrollToBottom()
         }
       })
+    },
+    onFoucs (e) {
+      // console.log(e)
+      this.isFoucsed = true
+      if (this.screenHeight > 300) {
+        this.keyBoardHeight = 0
+      } else {
+        this.keyBoardHeight = e.mp.detail.height
+      }
+    },
+    onBlur (e) {
+      this.isFoucsed = false
+      this.keyBoardHeight = 0
     }
   },
   onLoad (o) {
@@ -127,7 +151,7 @@ export default {
   // }
   .user {
     position: fixed;
-    bottom: 0;
+    // bottom: 0;
     width: 100%;
     padding: 30rpx 30rpx 40rpx 30rpx;
     background: #023744;
@@ -135,10 +159,10 @@ export default {
     box-sizing: border-box;
     .input {
       // color: #434;
-      border-bottom: 1px solid rgb(230, 225, 222);
-      &:focus {
-        border-bottom: 2px solid rgb(141, 33, 33);
-      }
+      border-bottom: 1px solid rgb(105, 103, 102);
+      // &:focus {
+      //   border-bottom: 2px solid rgb(141, 33, 33);
+      // }
     }
   }
 }
